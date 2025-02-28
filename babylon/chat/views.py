@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 
+from django.http import JsonResponse
+from django.urls import get_resolver
+
 @login_required
 def chat_room(request):
     messages = Message.objects.all().order_by('timestamp')
@@ -40,3 +43,7 @@ def send_message(request):
         content = request.POST['content']
         Message.objects.create(user=request.user, content=content)
     return redirect('chat')
+
+def test_routes(request):
+    routes = list(get_resolver().reverse_dict.keys())  # Pegamos apenas os nomes das rotas
+    return JsonResponse({"routes": [str(route) for route in routes]})  # Convertendo para string
