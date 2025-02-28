@@ -1,0 +1,15 @@
+{% extends "chat/base.html" %}
+
+{% block content %}
+<h2>Sala de Guerra</h2>
+<div id="chat">
+    {% for message in messages %}
+        <p><strong>{{ message.user.username }}:</strong> {{ message.content }}</p>
+    {% endfor %}
+</div>
+<form method="post" action="{% url 'chat:send_message' %}">
+    {% csrf_token %}
+    <input type="text" name="content" placeholder="Digite sua mensagem..." required>
+    <button type="submit">Enviar</button>
+</form>
+{% endblock %}
